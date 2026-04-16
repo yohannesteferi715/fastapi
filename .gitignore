@@ -1,0 +1,60 @@
+# ======================
+# Virtual Environment
+# ======================
+fastapivenv/
+venv/
+env/
+
+# ======================
+# Python cache
+# ======================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# ======================
+# Environment variables (VERY IMPORTANT)
+# ======================
+.env
+.env.local
+.env.*.local
+
+# ======================
+# Testing / coverage
+# ======================
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# ======================
+# Database files (if any local sqlite)
+# ======================
+*.sqlite3
+*.db
+
+# ======================
+# Logs
+# ======================
+*.log
+
+# ======================
+# IDEs
+# ======================
+.vscode/
+.idea/
+
+# ======================
+# OS files
+# ======================
+.DS_Store
+Thumbs.db
+
+# ======================
+# Packaging / build
+# ======================
+dist/
+build/
+*.egg-info/
