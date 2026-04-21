@@ -1,7 +1,8 @@
 from fastapi import FastAPI,Body
 
-from pydantic import BaseModel
+from pydantic import BaseModel,Field
 
+from typing import Optional
 
 app=FastAPI()
 
@@ -9,7 +10,7 @@ app=FastAPI()
 
 
 class Book:
-    id: int
+    id:int
     title: str
     author: str
     description: str
@@ -25,10 +26,34 @@ class Book:
         self.published_date = published_date
 
 class BookRequest(BaseModel):
-    id:int
-    title:str
-    description:str
-    rating:int
+    id :Optional[int] = Field( default=None,description="ID is not needed on create")
+    author:str=Field(min_length=1)
+    title:str=Field(min_length=3)
+    description:str=Field(min_length=1,max_length=100)
+    rating:int=Field(gt=-1,lt=5)
+    published_date:int
+    
+    
+    model_config={
+        
+        "json_schema_extra":{
+            "example":{
+                "title":"A new BOOK",
+                "author":"coding with yoni",
+                "description":"a new descritpion  of a book",
+                
+                
+            }
+        }
+        
+    }
+    
+    
+    
+    
+
+    
+    
     
 
     
@@ -58,9 +83,18 @@ async  def read_all_books():
 
 async  def create_book(book_request:BookRequest):
     new_book=Book(**book_request.model_dump())
-    print(type(new_book))
-    BOOKS.append(new_book)
+    
+    BOOKS.append(find_book_id(new_book))
     
 
 
 
+def  find_book_id(book:Book):
+    if len(BOOKS)>0:
+        book.id=BOOKS[-1].id+1
+        
+    else :
+        book.id=1
+        
+    return book
+    
