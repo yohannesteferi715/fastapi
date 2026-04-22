@@ -1,4 +1,4 @@
-from fastapi import FastAPI,Body
+from fastapi import FastAPI,Body,Path
 
 from pydantic import BaseModel,Field
 
@@ -50,6 +50,9 @@ class BookRequest(BaseModel):
     
     
     
+
+    
+    
     
 
     
@@ -64,8 +67,8 @@ BOOKS = [
     Book(2, 'Be Fast with FastAPI', 'codingwithroby', 'A great book!', 5, 2030),
     Book(3, 'Master Endpoints', 'codingwithroby', 'A awesome book!', 5, 2029),
     Book(4, 'HP1', 'Author 1', 'Book Description', 2, 2028),
-    Book(5, 'HP2', 'Author 2', 'Book Description', 3, 2027),
-    Book(6, 'HP3', 'Author 3', 'Book Description', 1, 2026)
+    Book(5, 'HP2', 'Author 2', 'Book Description', 2, 2027),
+    Book(6, 'HP3', 'Author 3', 'Book Description', 2, 2026)
 ]
 
 
@@ -98,3 +101,37 @@ def  find_book_id(book:Book):
         
     return book
     
+
+
+
+@app.get("/books/{book_id}")
+
+async def read_book(book_id:int=Path(gt=0)):
+    for book in BOOKS:
+        if book.id==book_id:
+            return book
+        
+        
+
+
+
+@app.get("/books")
+
+async def read_by_rating(book_rating:int):
+    books_return=[]
+    for book in BOOKS:
+        if book.rating==book_rating:
+            books_return.append(book)
+            
+            
+@app.put("/books/update")
+async  def update_book(book:BookRequest):
+    
+    for i in range(len(BOOKS)):
+        if BOOKS[i].id==book.id:
+            BOOKS[i]=book
+            
+            
+
+
+
