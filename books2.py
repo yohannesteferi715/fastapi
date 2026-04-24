@@ -1,4 +1,4 @@
-from fastapi import FastAPI,Path,Query
+from fastapi import FastAPI,Path,Query,HTTPException
 
 from pydantic import BaseModel,Field
 
@@ -109,10 +109,12 @@ def  find_book_id(book:Book):
 async def read_book(book_id:int=Path(gt=0)):
     for book in BOOKS:
         if book.id==book_id:
-            return book
+            return book 
+    raise HTTPException(status_code=404,detail="Item not found ")
+    
         
         
-
+ 
 
 
 @app.get("/books")
@@ -126,12 +128,33 @@ async def read_by_rating(book_rating:int=Query(gt=0,lt=0)):
             
 @app.put("/books/update")
 async  def update_book(book:BookRequest):
-    
+    book_change=False
     for i in range(len(BOOKS)):
         if BOOKS[i].id==book.id:
             BOOKS[i]=book
+            book_change=True
+            
+    if not book_change:
+        raise HTTPException(status_code=404,detail="Item not found ")
+    
             
             
 
 
 
+#Assignment
+#Add a new field to Book and BookRequest called published_date: int (for example, published_date: int = 2012). So, this book as published on the year of 2012.
+
+#Enhance each Book to now have a published_date
+
+#Then create a new GET Request method to filter by published_date
+
+
+app.get ("/book")
+async def book_filter(published_date:int):
+    for book in BOOKS:
+        if book.published_date==published_date:
+            return book
+    
+    
+    
